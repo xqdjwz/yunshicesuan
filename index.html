@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国学风水 - 运势测算平台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:"Microsoft YaHei",sans-serif;
+    color:#5c3d21;
+    line-height:1.6;
+    position:relative;
+    min-height:100vh;
+    padding-top:60px;
+    background:#fff9f0;
+}
+body::before{
+    content:'';
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(255,252,245,0.85);
+    z-index:-1;
+}
+
+/* 置顶导航 */
+.top-nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    height:60px;
+    background:linear-gradient(90deg,#8b5a2b,#a0522d);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:25px;
+    z-index:999;
+    box-shadow:0 2px 8px rgba(0,0,0,0.2);
+}
+.top-nav a{
+    color:#fff;
+    text-decoration:none;
+    font-size:15px;
+    font-weight:bold;
+    transition:0.2s;
+}
+.top-nav a:hover{
+    color:#ffd700;
+}
+
+.top-banner{
+    text-align:center;
+    padding:15px 10px;
+    background:rgba(255,249,239,0.9);
+    border-bottom:2px solid #c8a970;
+    margin-bottom:0;
+}
+.top-banner h2{
+    font-size:20px;
+    color:#8b5a2b;
+    margin-bottom:5px;
+}
+.top-banner p{
+    font-size:14px;
+    color:#a0522d;
+}
+
+.container{
+    max-width:900px;
+    margin:0 auto;
+    padding:0 20px 20px;
+    position:relative;
+    z-index:1;
+}
+.header{
+    text-align:center;
+    padding:20px 0;
+    margin:0;
+    background:rgba(255,249,239,0.9);
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(139,90,43,0.15);
+}
+.header h1{
+    font-size:28px;
+    color:#8b5a2b;
+    margin-bottom:8px;
+}
+.header p{
+    color:#a0522d;font-size:15px;
+}
+
+/* ✅ 修复图片变形：完整居中展示、不变形、不裁切 */
+.middle-banner {
+    width: 100%;
+    height: auto; /* 取消固定高度，让图片自适应高度 */
+    margin: 15px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(139, 90, 43, 0.15);
+}
+.banner-img {
+    width: 100%;
+    height: auto; /* 图片高度随宽度自适应，不会拉伸 */
+    display: block; /* 消除图片底部默认间距 */
+    filter: grayscale(70%) sepia(30%);
+    transition: filter 0.3s;
+    object-fit: contain; /* 保证图片完整显示，不裁切 */
+}
+.banner-img:hover {
+    filter: grayscale(40%) sepia(20%);
+}
+
+.box{
+    background:rgba(255,249,239,0.92);
+    border:1px solid #e2d4b7;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(139,90,43,0.12);
+}
+.box h2{
+    color:#8b5a2b;
+    margin-bottom:15px;
+    font-size:20px;
+    border-left:4px solid #c8a970;
+    padding-left:10px;
+    display:flex;align-items:center;gap:8px;
+}
+.box h2::before{
+    content:'☯';color:#c8a970;font-size:22px;
+}
+.form-item{margin-bottom:16px;}
+label{
+    display:block;margin-bottom:6px;
+    font-weight:bold;color:#6d4a32;
+}
+input,select{
+    width:100%;padding:10px 12px;
+    border:1px solid #d4c3a8;
+    border-radius:8px;
+    background:rgba(255,255,255,0.9);
+    font-size:15px;color:#5c3d21;
+    outline:none;
+}
+button{
+    width:100%;padding:12px;
+    background:linear-gradient(135deg,#8b5a2b,#a0522d);
+    color:#fff;border:none;border-radius:8px;
+    font-size:16px;cursor:pointer;
+    font-weight:bold;
+}
+.result{
+    margin-top:15px;padding:15px;
+    background:#fff;
+    border:1px solid #e2d4b7;
+    border-radius:8px;
+    display:none;
+}
+.tips{
+    color:#999;font-size:13px;
+    margin-top:10px;text-align:center;
+}
+.fengshui-list{
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.fengshui-item{
+    background:#fff;
+    padding:12px;border-radius:8px;
+    border:1px solid #e2d4b7;
+}
+.huangli-box{
+    display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;
+}
+.huangli-item{
+    flex:1;min-width:110px;text-align:center;
+    padding:8px;background:#fff;
+    border-radius:8px;
+    border:1px solid #e2d4b7;
+}
+.footer{
+    margin-top:30px;
+    padding:20px;
+    background:rgba(255,249,239,0.9);
+    border-top:2px solid #c8a970;
+    text-align:center;
+    color:#6d4a32;
+    font-size:14px;
+}
+.footer a{
+    color:#8b5a2b;
+    text-decoration:none;
+    font-weight:bold;
+}
+#backToTop{
+    position:fixed;bottom:20px;right:20px;
+    width:44px;height:44px;
+    background:#8b5a2b;color:#fff;
+    border-radius:50%;display:flex;
+    align-items:center;justify-content:center;
+    cursor:pointer;z-index:998;
+}
+@media(max-width:600px){
+    .top-nav{gap:10px;}
+    .top-nav a{font-size:13px;}
+    .fengshui-list{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- 置顶导航 -->
+<div class="top-nav">
+    <a href="#bazi">生辰八字</a>
+    <a href="#zodiac">生肖运势</a>
+    <a href="#love">姻缘配对</a>
+    <a href="#name">姓名打分</a>
+    <a href="#huangli">今日黄历</a>
+</div>
+
+<div class="top-banner">
+    <h2>传承国学文化 · 专业运势测算</h2>
+    <p>民俗文化娱乐 · 仅供休闲参考 · 切勿迷信</p>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>国学风水 · 运势测算平台</h1>
+        <p>生辰八字｜生肖命理｜姻缘测算｜姓名打分｜今日黄历</p>
+    </div>
+
+    <!-- ✅ 修复版图片：完整居中、不变形、不裁切 -->
+    <div class="middle-banner">
+        <img src="https://statics.huangli.com/uploads/image/20250317/77504621520449b9da914e7178912686f333dc4b.webp" alt="风水图" class="banner-img">
+    </div>
+
+    <div class="box" id="bazi">
+        <h2>生辰八字测算</h2>
+        <div class="form-item">
+            <label>出生年份</label>
+            <select id="year"></select>
+        </div>
+        <div class="form-item">
+            <label>出生月份</label>
+            <select id="month"></select>
+        </div>
+        <div class="form-item">
+            <label>出生日期</label>
+            <select id="day"></select>
+        </div>
+        <div class="form-item">
+            <label>出生时辰</label>
+            <select id="hour">
+                <option value="">请选择</option>
+                <option value="子">子时(23-1点)</option>
+                <option value="丑">丑时(1-3点)</option>
+                <option value="寅">寅时(3-5点)</option>
+                <option value="卯">卯时(5-7点)</option>
+                <option value="辰">辰时(7-9点)</option>
+                <option value="巳">巳时(9-11点)</option>
+                <option value="午">午时(11-13点)</option>
+                <option value="未">未时(13-15点)</option>
+                <option value="申">申时(15-17点)</option>
+                <option value="酉">酉时(17-19点)</option>
+                <option value="戌">戌时(19-21点)</option>
+                <option value="亥">亥时(21-23点)</option>
+            </select>
+        </div>
+        <button onclick="calcBazi()">开始测算</button>
+        <div class="result" id="baziResult"></div>
+    </div>
+
+    <div class="box" id="zodiac">
+        <h2>生肖运势测算</h2>
+        <div class="form-item">
+            <select id="zodiac">
+                <option value="">请选择生肖</option>
+                <option value="鼠">子鼠</option><option value="牛">丑牛</option>
+                <option value="虎">寅虎</option><option value="兔">卯兔</option>
+                <option value="龙">辰龙</option><option value="蛇">巳蛇</option>
+                <option value="马">午马</option><option value="羊">未羊</option>
+                <option value="猴">申猴</option><option value="鸡">酉鸡</option>
+                <option value="狗">戌狗</option><option value="猪">亥猪</option>
+            </select>
+        </div>
+        <button onclick="calcZodiac()">测算生肖运势</button>
+        <div class="result" id="zodiacResult"></div>
+    </div>
+
+    <div class="box" id="love">
+        <h2>姻缘配对测算</h2>
+        <div class="form-item">
+            <label>男方姓名</label>
+            <input type="text" id="maleName" placeholder="请输入男方姓名">
+        </div>
+        <div class="form-item">
+            <label>女方姓名</label>
+            <input type="text" id="femaleName" placeholder="请输入女方姓名">
+        </div>
+        <button onclick="calcLove()">测算姻缘配对</button>
+        <div class="result" id="loveResult"></div>
+    </div>
+
+    <div class="box" id="name">
+        <h2>姓名吉凶打分</h2>
+        <div class="form-item">
+            <label>输入姓名</label>
+            <input type="text" id="name" placeholder="请输入姓名">
+        </div>
+        <button onclick="calcNameScore()">姓名打分</button>
+        <div class="result" id="nameResult"></div>
+    </div>
+
+    <div class="box" id="huangli">
+        <h2>今日黄历查询</h2>
+        <button onclick="getHuangli()">查看今日黄历</button>
+        <div class="result" id="huangliResult"></div>
+    </div>
+
+    <div class="box">
+        <h2>风水小常识</h2>
+        <div class="fengshui-list">
+            <div class="fengshui-item"><strong>大门风水</strong><p>大门宜开阔明亮，聚气纳财。</p></div>
+            <div class="fengshui-item"><strong>卧室风水</strong><p>床头靠实墙，安神助运。</p></div>
+            <div class="fengshui-item"><strong>客厅风水</strong><p>财位整洁，利于聚财。</p></div>
+            <div class="fengshui-item"><strong>办公风水</strong><p>背后有靠，事业稳固。</p></div>
+        </div>
+    </div>
+
+    <p class="tips">⚠ 本站仅供娱乐，切勿迷信</p>
+</div>
+
+<!-- 底部个人博客页脚 -->
+<div class="footer">
+    <p>个人博客：<a href="https://www.doubao.com/thread/aa4b1fcc017e0" target="_blank">点击访问</a></p>
+    <p>© 2026 国学运势测算平台  All Rights Reserved</p>
+</div>
+
+<div id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+(function(){
+    for(let y=1920;y<=2010;y++){let o=new Option(y+"年",y);document.getElementById("year").append(o);}
+    for(let m=1;m<=12;m++){let o=new Option(m+"月",m);document.getElementById("month").append(o);}
+    for(let d=1;d<=31;d++){let o=new Option(d+"日",d);document.getElementById("day").append(o);}
+})();
+
+const fiveElements = ["木","火","土","金","水"];
+const baziTexts = ["命格稳健，中年起运","五行调和，贵人常在","福泽深厚，人缘极佳","思维敏捷，创意十足","守财有道，一生安稳"];
+const zodiacTexts = {
+鼠:"财运佳，贵人多",牛:"运势平稳，踏实求财",虎:"事业上升，把握机会",
+兔:"人缘旺盛，诸事顺遂",龙:"机遇多多，前程向好",蛇:"稳中求进，切勿急躁",
+马:"活力满满，事事顺心",羊:"温和顺遂，家庭和睦",猴:"灵感充沛，适合创新",
+鸡:"低调行事，收获满满",狗:"贵人相助，运势平稳",猪:"福气满满，生活无忧"
+};
+const loveTexts = ["天作之合 95分","佳偶天成 85分","和睦相伴 75分","磨合长久 65分","平淡相守 55分"];
+const goodTexts = ["大吉","中吉","小吉","平"];
+const jiyi = ["嫁娶","出行","开市","动土","祭祀","搬家"];
+
+function calcBazi(){
+    let y=year.value,m=month.value,d=day.value,h=hour.value;
+    if(!y||!m||!d||!h)return alert("请完善信息");
+    baziResult.style.display="block";
+    baziResult.innerHTML=`<p>📅 ${y}年${m}月${d}日 ${h}时</p><p>五行：${fiveElements[Math.floor(Math.random()*5)]}命</p><p>简批：${baziTexts[Math.floor(Math.random()*5)]}</p>`;
+}
+function calcZodiac(){
+    let z=zodiac.value;if(!z)return alert("请选生肖");
+    zodiacResult.style.display="block";
+    zodiacResult.innerHTML=`<p>${z}生肖：${zodiacTexts[z]}</p>`;
+}
+function calcLove(){
+    let m=maleName.value.trim(),f=femaleName.value.trim();
+    if(!m||!f)return alert("输入双方姓名");
+    loveResult.style.display="block";
+    loveResult.innerHTML=`<p>${m} & ${f}</p><p>配对：${loveTexts[Math.floor(Math.random()*5)]}</p>`;
+}
+function calcNameScore(){
+    let n=name.value.trim();if(!n)return alert("输入姓名");
+    let s=Math.floor(Math.random()*40+60);
+    nameResult.style.display="block";
+    nameResult.innerHTML=`<p>姓名：${n}</p><p>评分：${s}分</p><p>${s>=80?'吉名':'普通'}</p>`;
+}
+function getHuangli(){
+    let d=new Date();
+    let y=d.getFullYear(),m=d.getMonth()+1,day=d.getDate();
+    let yi=jiyi[Math.floor(Math.random()*6)],ji=jiyi[Math.floor(Math.random()*6)];
+    huangliResult.style.display="block";
+    huangliResult.innerHTML=`<p>${y}年${m}月${day}日</p><p>宜：${yi}</p><p>忌：${ji}</p><p>运势：${goodTexts[Math.floor(Math.random()*4)]}</p>`;
+}
+</script>
+</body>
+</html>
